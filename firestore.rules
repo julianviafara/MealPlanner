@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function hasValidShape() {
+        return request.resource.data.keys().hasOnly([
+          'uid', 'displayName', 'email', 'provider', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.displayName is string
+        && request.resource.data.provider is string
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+      }
+
+      allow read: if isOwner();
+      allow create: if isOwner()
+        && hasValidShape()
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.provider in ['password', 'google.com'];
+      allow update: if isOwner()
+        && hasValidShape()
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.provider == resource.data.provider;
+      allow delete: if false;
+    }
+  }
+}

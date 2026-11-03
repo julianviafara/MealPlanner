@@ -1,0 +1,6 @@
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 19px; letter-spacing: -.7px; color: var(--color-ink); }
+.brand > span:last-child > span { color: var(--color-muted); font-weight: 400; }
+.mark { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50% 50% 50% 12%; background: var(--color-primary); color: var(--color-white); font-family: var(--font-display); font-style: italic; font-size: 17px; }
+.light { color: #fffefa; }
+.light > span:last-child > span { color: #d4dbd2; }
+.light .mark { background: #fffefa; color: #344d3c; }

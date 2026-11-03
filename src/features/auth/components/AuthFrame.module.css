@@ -1,0 +1,12 @@
+.page { min-height: 100svh; background: var(--color-page); color: var(--color-ink); }
+.header { max-width: 1240px; min-height: 76px; margin: auto; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; }
+.content { width: min(100% - 36px, 450px); margin: 45px auto 70px; }
+.intro { text-align: center; margin-bottom: 24px; }
+.intro > span { color: var(--color-accent); font-size: 10px; font-weight: 700; letter-spacing: 1.7px; }
+.intro h1 { margin: 10px 0; font: 500 clamp(34px, 8vw, 43px)/1.15 var(--font-display); letter-spacing: -1.2px; }
+.intro p { color: var(--color-muted); font-size: 13px; line-height: 1.7; }
+.formCard { padding: 27px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-card); }
+.footer { margin-top: 20px; text-align: center; color: var(--color-muted); font-size: 12px; }
+.homeLink { display: block; width: fit-content; margin: 20px auto 0; color: var(--color-muted); font-size: 11px; text-decoration: none; }
+.homeLink:hover { color: var(--color-primary); }
+@media (max-width: 560px) { .header { padding: 0 20px; } .content { margin-top: 28px; } .formCard { padding: 21px; } }

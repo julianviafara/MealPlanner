@@ -1,0 +1,16 @@
+.form { display: grid; gap: 16px; }
+.passwordWrap { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8px; }
+.passwordWrap > div { min-width: 0; }
+.reveal { height: 45px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--color-muted); cursor: pointer; font-size: 11px; }
+.topLink { display: flex; justify-content: flex-end; margin-top: -8px; font-size: 11px; color: var(--color-primary); text-decoration: none; }
+.message { padding: 11px 13px; border-radius: var(--radius-sm); background: color-mix(in srgb, #b64d45 10%, var(--color-surface)); color: #a33730; font-size: 12px; line-height: 1.55; }
+.success { background: color-mix(in srgb, #4d8058 12%, var(--color-surface)); color: var(--color-primary); }
+.google { min-height: 45px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: var(--color-surface); color: var(--color-ink); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.google:hover { border-color: var(--color-primary); }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--color-muted); font-size: 10px; }
+.divider::before, .divider::after { content: ''; height: 1px; flex: 1; background: var(--color-border); }
+.buttonText { display: inline-flex; gap: 5px; align-items: center; color: var(--color-primary); font-weight: 600; text-decoration: none; }
+.passwordNote { color: var(--color-muted); font-size: 10px; margin-top: -10px; }
+.configNotice { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface-alt); color: var(--color-muted); font-size: 11px; line-height: 1.6; }
+.configNotice strong { display: block; color: var(--color-ink); margin-bottom: 3px; }
+.googleIcon { color: #4285f4; }

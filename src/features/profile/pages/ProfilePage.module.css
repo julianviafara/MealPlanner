@@ -1,0 +1,18 @@
+.page { max-width: 780px; display: grid; gap: 25px; }
+.heading > span { color: var(--color-accent); font-size: 9px; font-weight: 700; letter-spacing: 1.6px; }
+.heading h1 { margin: 9px 0 7px; font: 500 42px/1.15 var(--font-display); letter-spacing: -1px; }
+.heading p { color: var(--color-muted); font-size: 12px; }
+.card { padding: 24px; }
+.identity { display: flex; align-items: center; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--color-border); }
+.avatar { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--color-secondary); color: var(--color-primary); font: 500 18px var(--font-display); }
+.identity > div { display: grid; gap: 4px; flex: 1; }
+.identity strong { font-size: 12px; }
+.identity div span { color: var(--color-muted); font-size: 10px; }
+.identity > small { padding: 6px 9px; border-radius: 30px; background: var(--color-page); color: var(--color-muted); font-size: 9px; }
+.form { display: grid; gap: 17px; max-width: 470px; padding-top: 21px; }
+.form > button { justify-self: start; min-width: 140px; }
+.reauthNote { margin: -8px 0 0; color: var(--color-muted); font-size: 11px; line-height: 1.6; }
+.error { padding: 11px 13px; border-radius: 8px; background: color-mix(in srgb, #b64d45 10%, var(--color-surface)); color: #a33730; font-size: 12px; }
+.success { padding: 11px 13px; border-radius: 8px; background: color-mix(in srgb, #4d8058 12%, var(--color-surface)); color: var(--color-primary); font-size: 12px; }
+.loading { min-height: 220px; display: grid; place-items: center; }
+@media (max-width: 540px) { .heading h1 { font-size: 36px; } .card { padding: 18px; } .identity { flex-wrap: wrap; } .identity > div { min-width: calc(100% - 60px); } .identity > small { margin-left: 54px; } }

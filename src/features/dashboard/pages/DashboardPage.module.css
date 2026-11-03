@@ -1,0 +1,26 @@
+.page { display: grid; gap: 25px; }
+.heading .eyebrow { color: var(--color-accent); font-size: 9px; font-weight: 700; letter-spacing: 1.6px; }
+.heading h1 { margin: 10px 0 8px; font: 500 clamp(34px, 5vw, 47px)/1.15 var(--font-display); letter-spacing: -1.2px; }
+.heading p, .panel > p, .profileCard p { color: var(--color-muted); font-size: 12px; line-height: 1.7; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.panel { padding: 22px; }
+.panelHeading { display: flex; align-items: center; justify-content: space-between; }
+.icon { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 12px; background: var(--color-secondary); color: var(--color-primary); flex: none; }
+.tag { color: var(--color-accent); font-size: 8px; font-weight: 700; letter-spacing: 1.1px; }
+.panel h2, .profileCard h2 { margin: 17px 0 6px; font: 500 21px/1.25 var(--font-display); }
+.panel > p { min-height: 40px; max-width: 390px; }
+.weekPreview { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 21px; }
+.weekPreview span { padding: 10px 2px; text-align: center; border-radius: 6px; background: var(--color-page); color: var(--color-muted); font-size: 8px; letter-spacing: .4px; }
+.emptyNotice { margin-top: 13px; color: var(--color-muted); font-family: var(--font-display); font-style: italic; font-size: 12px; }
+.listPreview { display: grid; gap: 8px; margin-top: 18px; }
+.listPreview span { height: 9px; width: 90%; border-radius: 5px; background: var(--color-page); }
+.listPreview span:nth-child(2) { width: 73%; }
+.listPreview span:nth-child(3) { width: 83%; }
+.profileCard { min-height: 91px; padding: 17px 20px; display: flex; align-items: center; gap: 14px; }
+.profileCard > div { flex: 1; }
+.profileCard h2 { margin: 0 0 4px; font-size: 17px; }
+.profileCard p { margin: 0; font-size: 10px; }
+.profileCard > a { display: flex; align-items: center; gap: 7px; color: var(--color-primary); font-size: 11px; font-weight: 600; text-decoration: none; }
+.phaseNote { max-width: 700px; color: var(--color-muted); font-size: 10px; line-height: 1.7; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .panel > p { min-height: 0; } }
+@media (max-width: 430px) { .profileCard { align-items: flex-start; flex-wrap: wrap; } .profileCard > div { min-width: calc(100% - 60px); } .profileCard > a { margin-left: 53px; } }

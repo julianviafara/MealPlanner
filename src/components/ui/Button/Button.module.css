@@ -1,0 +1,9 @@
+.button { min-height: 45px; padding: 0 18px; border: 1px solid transparent; border-radius: var(--radius-pill); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; transition: background .2s, border-color .2s, transform .2s; }
+.button:hover:not(:disabled) { transform: translateY(-1px); }
+.button:disabled { opacity: .6; cursor: not-allowed; }
+.primary { color: var(--color-white); background: var(--color-primary); }
+.primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+.secondary { color: var(--color-primary); border-color: var(--color-border); background: var(--color-surface); }
+.secondary:hover:not(:disabled) { border-color: var(--color-primary); }
+.quiet { color: var(--color-primary); background: transparent; }
+.fullWidth { width: 100%; }
