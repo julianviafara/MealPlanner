@@ -12,6 +12,9 @@ const RegisterPage = lazy(() => import('../../features/auth/pages/RegisterPage')
 const ForgotPasswordPage = lazy(() => import('../../features/auth/pages/ForgotPasswordPage').then((module) => ({ default: module.ForgotPasswordPage })))
 const DashboardPage = lazy(() => import('../../features/dashboard/pages/DashboardPage').then((module) => ({ default: module.DashboardPage })))
 const ProfilePage = lazy(() => import('../../features/profile/pages/ProfilePage').then((module) => ({ default: module.ProfilePage })))
+const RecipeCatalogPage = lazy(() => import('../../features/recipes/pages/RecipeCatalogPage').then((module) => ({ default: module.RecipeCatalogPage })))
+const RecipeDetailsPage = lazy(() => import('../../features/recipes/pages/RecipeDetailsPage').then((module) => ({ default: module.RecipeDetailsPage })))
+const FavoritesPage = lazy(() => import('../../features/recipes/pages/FavoritesPage').then((module) => ({ default: module.FavoritesPage })))
 
 function RouteLoading() {
   return <div className={styles.loading}><LoadingSpinner label="Getting your space ready" /></div>
@@ -44,6 +47,9 @@ export function AppRouter() {
     </Route>
     <Route element={<RequireAuth />}><Route element={<AppLayout />}>
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/recipes" element={<RecipeCatalogPage />} />
+      <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
+      <Route path="/favorites" element={<FavoritesPage />} />
       <Route path="/profile" element={<ProfilePage />} />
     </Route></Route>
     <Route path="*" element={<Navigate to="/" replace />} />

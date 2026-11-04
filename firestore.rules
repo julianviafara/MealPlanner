@@ -31,6 +31,29 @@ service cloud.firestore {
         && request.resource.data.updatedAt == request.time
         && request.resource.data.provider == resource.data.provider;
       allow delete: if false;
+
+      match /favorites/{mealId} {
+        function hasValidFavorite() {
+          return request.resource.data.keys().hasOnly([
+            'id', 'name', 'thumbnail', 'category', 'area', 'savedAt'
+          ])
+          && request.resource.data.id == mealId
+          && request.resource.data.id is string
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.thumbnail is string
+          && request.resource.data.thumbnail.size() > 0
+          && (request.resource.data.category == null || request.resource.data.category is string)
+          && (request.resource.data.area == null || request.resource.data.area is string)
+          && request.resource.data.savedAt is timestamp
+          && request.resource.data.savedAt == request.time;
+        }
+
+        allow read: if isOwner();
+        allow create: if isOwner() && hasValidFavorite();
+        allow update: if false;
+        allow delete: if isOwner();
+      }
     }
   }
 }
