@@ -1,0 +1,75 @@
+.page { display: grid; gap: 28px; color: var(--color-ink); }
+.pageHeading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.pageHeading h1, .detailIntro h1, .statePage h1 { margin: 7px 0 8px; font: 600 clamp(2rem, 4vw, 3.25rem)/1.08 var(--font-display); letter-spacing: -.035em; }
+.pageHeading p, .featuredText p, .emptyState p, .statePage p { margin: 0; color: var(--color-muted); line-height: 1.65; }
+.eyebrow { color: var(--color-accent); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.pageHeading :global(button) { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.searchPanel { display: grid; gap: 15px; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.searchBox { display: flex; align-items: center; gap: 11px; min-height: 50px; padding: 0 14px; color: var(--color-muted); border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-page); }
+.searchBox input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--color-ink); background: transparent; font: inherit; }
+.searchBox input::placeholder { color: var(--color-muted); }
+.searchBox button { display: grid; width: 32px; height: 32px; place-items: center; border: 0; border-radius: 50%; color: var(--color-muted); background: transparent; cursor: pointer; }
+.searchBox button:hover { color: var(--color-ink); background: var(--color-secondary); }
+.visuallyHidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.filterRow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.filterLabel { display: grid; gap: 6px; color: var(--color-muted); font-size: 11px; font-weight: 600; }
+.filterLabel select { width: 100%; min-height: 42px; padding: 0 10px; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-ink); background: var(--color-surface); font: inherit; }
+.activeFilter { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--color-primary); font-size: 12px; }
+.activeFilter button { display: inline-flex; align-items: center; gap: 4px; padding: 5px 8px; border: 0; border-radius: 8px; color: var(--color-muted); background: transparent; font: inherit; cursor: pointer; }
+.activeFilter button:hover { color: var(--color-ink); background: var(--color-secondary); }
+.note { margin: -8px 0 0; color: var(--color-muted); font-size: 11px; }
+.featured { position: relative; display: grid; grid-template-columns: minmax(220px, .85fr) 1fr auto; align-items: center; gap: 28px; overflow: hidden; padding: 16px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-card); }
+.featuredPhoto { width: 100%; height: 215px; object-fit: cover; border-radius: calc(var(--radius-md) - 3px); }
+.featuredText h2 { margin: 8px 0; font: 600 clamp(1.5rem, 3vw, 2.3rem)/1.1 var(--font-display); }
+.textLink, .sourceLinks a, .backLink, .statePage a { display: inline-flex; align-items: center; gap: 8px; color: var(--color-primary); font-size: 13px; font-weight: 600; text-decoration: none; }
+.textLink { margin-top: 18px; }
+.textLink:hover, .sourceLinks a:hover, .backLink:hover, .statePage a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.featured > :global(.favoriteButton) { align-self: start; }
+.sectionTitle { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 1.6rem/1.2 var(--font-display); }
+.sectionTitle span { display: inline-grid; min-width: 26px; height: 26px; padding: 0 6px; place-items: center; border-radius: 99px; color: var(--color-primary); background: var(--color-secondary); font: 600 11px var(--font-body); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.recipeCard { position: relative; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); transition: transform .18s ease, box-shadow .18s ease; }
+.recipeCard:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.cardLink { display: block; color: inherit; text-decoration: none; }
+.imageWrap { aspect-ratio: 1.42; overflow: hidden; background: var(--color-surface-alt); }
+.imageWrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.recipeCard:hover .imageWrap img { transform: scale(1.035); }
+.imageFallback { display: grid; width: 100%; height: 100%; place-items: center; color: var(--color-muted); font-size: 12px; }
+.cardBody { padding: 15px 15px 18px; }
+.meta { color: var(--color-muted); font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+.cardBody h3 { margin: 7px 34px 0 0; font: 600 1.12rem/1.25 var(--font-display); }
+.cardAction { position: absolute; right: 11px; bottom: 11px; }
+.favoriteButton { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 38px; min-height: 38px; padding: 0 11px; border: 1px solid var(--color-border); border-radius: 99px; color: var(--color-ink); background: var(--color-surface); font: 600 11px var(--font-body); cursor: pointer; box-shadow: 0 3px 12px rgb(0 0 0 / 8%); }
+.favoriteButton:hover, .favoriteButton.saved { color: var(--color-accent); border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border)); }
+.favoriteButton:disabled { opacity: .6; cursor: wait; }
+.loading { min-height: 180px; display: grid; place-items: center; }
+.emptyState, .statePage { display: grid; justify-items: center; gap: 10px; padding: 54px 20px; border: 1px dashed var(--color-border); border-radius: var(--radius-md); text-align: center; color: var(--color-muted); }
+.emptyState > svg { color: var(--color-primary); }
+.emptyState h2 { margin: 3px 0 0; color: var(--color-ink); font: 600 1.5rem var(--font-display); }
+.emptyState p { max-width: 440px; }
+.error { margin: 0; padding: 12px 14px; border-radius: 9px; color: #a33e37; background: color-mix(in srgb, #a33e37 10%, var(--color-surface)); font-size: 13px; }
+.attribution { margin: 4px 0 0; color: var(--color-muted); font-size: 11px; }
+.detailsPage { display: grid; gap: 25px; color: var(--color-ink); }
+.backLink { width: fit-content; color: var(--color-muted); }
+.detailHero { display: grid; grid-template-columns: minmax(280px, 1.05fr) 1fr; align-items: center; gap: clamp(24px, 5vw, 64px); }
+.detailHero > img { width: 100%; max-height: 500px; aspect-ratio: 1.25; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); }
+.detailPhotoFallback { width: 100%; min-height: 260px; aspect-ratio: 1.25; border-radius: var(--radius-lg); }
+.detailIntro h1 { font-size: clamp(2.4rem, 5vw, 4.5rem); }
+.detailIntro > :global(.favoriteButton) { margin-top: 22px; }
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+.tags span { padding: 6px 10px; border-radius: 99px; color: var(--color-primary); background: var(--color-secondary); font-size: 11px; }
+.detailColumns { display: grid; grid-template-columns: minmax(220px, .75fr) 1.25fr; gap: clamp(25px, 5vw, 70px); padding-top: 15px; }
+.detailColumns h2 { margin: 7px 0 17px; font: 600 1.8rem var(--font-display); }
+.ingredients ul { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-border); }
+.ingredients li { display: flex; justify-content: space-between; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--color-border); font-size: 13px; line-height: 1.45; }
+.ingredients li span:last-child { color: var(--color-muted); text-align: right; }
+.ingredients > p, .instructions > div > p { color: var(--color-muted); font-size: 14px; line-height: 1.85; }
+.instructions > div { display: grid; gap: 4px; }
+.instructions > div > p { margin: 0 0 9px; }
+.sourceLinks { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 24px; }
+.license { color: var(--color-muted); font-size: 11px; }
+.statePage { min-height: 320px; align-content: center; }
+.statePage h1 { font-size: 2.4rem; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .featured { grid-template-columns: minmax(180px, .8fr) 1fr; } }
+@media (max-width: 650px) { .pageHeading { align-items: flex-start; flex-direction: column; } .pageHeading :global(button) { min-height: 40px; } .searchPanel { padding: 13px; } .filterRow { grid-template-columns: 1fr; } .featured { grid-template-columns: 1fr; gap: 16px; padding: 12px; border-radius: var(--radius-md); } .featuredPhoto { height: 205px; } .featuredText { padding: 2px 4px 8px; } .grid { grid-template-columns: 1fr; gap: 13px; } .imageWrap { aspect-ratio: 1.6; } .detailHero { grid-template-columns: 1fr; gap: 20px; } .detailHero > img, .detailPhotoFallback { max-height: 350px; aspect-ratio: 1.25; } .detailColumns { grid-template-columns: 1fr; gap: 30px; } .detailIntro h1 { font-size: 2.7rem; } }
+@media (prefers-reduced-motion: reduce) { .recipeCard, .imageWrap img { transition: none; } }
