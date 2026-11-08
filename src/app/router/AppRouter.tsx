@@ -15,6 +15,7 @@ const ProfilePage = lazy(() => import('../../features/profile/pages/ProfilePage'
 const RecipeCatalogPage = lazy(() => import('../../features/recipes/pages/RecipeCatalogPage').then((module) => ({ default: module.RecipeCatalogPage })))
 const RecipeDetailsPage = lazy(() => import('../../features/recipes/pages/RecipeDetailsPage').then((module) => ({ default: module.RecipeDetailsPage })))
 const FavoritesPage = lazy(() => import('../../features/recipes/pages/FavoritesPage').then((module) => ({ default: module.FavoritesPage })))
+const WeeklyPlannerPage = lazy(() => import('../../features/planner/pages/WeeklyPlannerPage').then((module) => ({ default: module.WeeklyPlannerPage })))
 
 function RouteLoading() {
   return <div className={styles.loading}><LoadingSpinner label="Getting your space ready" /></div>
@@ -50,6 +51,7 @@ export function AppRouter() {
       <Route path="/recipes" element={<RecipeCatalogPage />} />
       <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
       <Route path="/favorites" element={<FavoritesPage />} />
+      <Route path="/planner" element={<WeeklyPlannerPage />} />
       <Route path="/profile" element={<ProfilePage />} />
     </Route></Route>
     <Route path="*" element={<Navigate to="/" replace />} />

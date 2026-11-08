@@ -54,6 +54,60 @@ service cloud.firestore {
         allow update: if false;
         allow delete: if isOwner();
       }
+
+      match /mealPlans/{weekId} {
+        function hasValidWeek() {
+          return request.resource.data.keys().hasAll(['weekStartDate', 'createdAt', 'updatedAt'])
+            && request.resource.data.keys().hasOnly(['weekStartDate', 'createdAt', 'updatedAt'])
+            && request.resource.data.weekStartDate == weekId
+            && weekId.matches('^\\d{4}-\\d{2}-\\d{2}$')
+            && request.resource.data.createdAt is timestamp
+            && request.resource.data.updatedAt is timestamp
+            && request.resource.data.updatedAt == request.time;
+        }
+
+        allow read: if isOwner();
+        allow create: if isOwner()
+          && hasValidWeek()
+          && request.resource.data.createdAt == request.time;
+        allow update: if isOwner()
+          && hasValidWeek()
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner();
+
+        match /meals/{mealId} {
+          function hasValidMeal() {
+            return request.resource.data.keys().hasAll([
+              'mealId', 'date', 'recipeId', 'recipeName', 'recipeThumbnail', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.keys().hasOnly([
+              'mealId', 'date', 'recipeId', 'recipeName', 'recipeThumbnail', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.mealId == mealId
+            && request.resource.data.date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+            && request.resource.data.recipeId is string
+            && request.resource.data.recipeId.size() > 0
+            && request.resource.data.recipeName is string
+            && request.resource.data.recipeName.size() > 0
+            && request.resource.data.recipeThumbnail is string
+            && request.resource.data.recipeThumbnail.size() > 0
+            && request.resource.data.createdAt is timestamp
+            && request.resource.data.updatedAt is timestamp
+            && request.resource.data.updatedAt == request.time;
+          }
+
+          allow read: if isOwner();
+          allow create: if isOwner()
+            && hasValidMeal()
+            && request.resource.data.createdAt == request.time;
+          allow update: if isOwner()
+            && hasValidMeal()
+            && request.resource.data.mealId == resource.data.mealId
+            && request.resource.data.date == resource.data.date
+            && request.resource.data.createdAt == resource.data.createdAt;
+          allow delete: if isOwner();
+        }
+      }
     }
   }
 }

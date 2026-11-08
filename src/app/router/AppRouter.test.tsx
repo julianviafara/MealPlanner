@@ -30,6 +30,12 @@ describe('application route guards', () => {
     expect(await screen.findByRole('heading', { name: 'Welcome back.' })).toBeInTheDocument()
   })
 
+  it('protects the weekly planner route with the existing auth redirect', async () => {
+    mockUseAuth.mockReturnValue(authValue('unauthenticated', null))
+    renderPath('/planner')
+    expect(await screen.findByRole('heading', { name: 'Welcome back.' })).toBeInTheDocument()
+  })
+
   it('sends authenticated visitors away from the login page to the dashboard', async () => {
     const user = { uid: 'user-1', displayName: 'Julian', email: 'julian@example.com' } as User
     mockUseAuth.mockReturnValue(authValue('authenticated', user))

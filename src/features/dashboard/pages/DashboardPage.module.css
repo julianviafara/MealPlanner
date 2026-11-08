@@ -12,6 +12,8 @@
 .weekPreview { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 21px; }
 .weekPreview span { padding: 10px 2px; text-align: center; border-radius: 6px; background: var(--color-page); color: var(--color-muted); font-size: 8px; letter-spacing: .4px; }
 .emptyNotice { margin-top: 13px; color: var(--color-muted); font-family: var(--font-display); font-style: italic; font-size: 12px; }
+.plannerLink { display: inline-flex; align-items: center; gap: 6px; margin-top: 13px; color: var(--color-primary); font-size: 11px; font-weight: 700; text-decoration: none; }
+.plannerLink:hover { text-decoration: underline; text-underline-offset: 3px; }
 .listPreview { display: grid; gap: 8px; margin-top: 18px; }
 .listPreview span { height: 9px; width: 90%; border-radius: 5px; background: var(--color-page); }
 .listPreview span:nth-child(2) { width: 73%; }
