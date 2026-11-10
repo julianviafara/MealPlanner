@@ -26,9 +26,21 @@ Firestore documents are stored at `users/{uid}/mealPlans/{weekId}` with `weekSta
 
 The calendar is a seven-column grid on wide screens, three/two columns on narrower tablet widths, and a vertical list on mobile. Each day renders exactly the meals stored for its date; there are no meal-time slots or count limits. The planner can be opened from `/planner` and from the dashboard. Recipe cards link to the existing `/recipes/:id` details route.
 
+## Shopping list feature (Phase 5)
+
+`features/shopping-list/pages/ShoppingListPage.tsx` selects a week, presents generated recipe ingredients separately from manual items, displays progress, purchase controls, and an outdated-plan notice. The initial selected week is the next Monday-to-Sunday week. Week navigation reuses the planner's `WeekNavigation`, `getCurrentWeekStart`, and `shiftWeek` utilities.
+
+`useShoppingList.ts` loads shopping data together with a stable meal-plan snapshot. The snapshot checks the plan's `updatedAt` before and after reading its meal subcollection and retries if it changes mid-read. Regeneration is user controlled: it fetches each unique planned recipe ID once through the existing `getRecipeById` service, then aggregates each planned meal occurrence. If any recipe details are unavailable, generation stops and leaves the saved shopping list untouched.
+
+`utils/ingredientAggregation.ts` is deterministic and independent of React. Ingredient names are trimmed, whitespace-collapsed, and compared case-insensitively; it does not fuzzy-match. `measurementUtils.ts` accepts nonnegative integers, decimals, simple fractions, and mixed numbers with supported units (`g`, `kg`, `ml`, `l`, `cup`, `tbsp`, `tsp`, `clove`, and `piece`, plus documented spelling aliases). It only adds quantities that share the same canonical unit (or both have no unit). It never converts between units. Unknown, malformed, empty, and nonnumeric measures remain separate raw-measure groups; identical normalized raw measures may be grouped without assigning a numeric quantity.
+
+Generated IDs encode the normalized ingredient name and parsed-unit or normalized-raw-measure group. Reconciliation upserts those IDs, preserves `isPurchased` and `createdAt` for matching generated documents, removes obsolete generated documents, and never deletes manual documents. Manual names and optional notes can be edited; purchase state is stored for both item types. Removing a generated item is allowed, though a later regeneration will add it again if the ingredient is still required.
+
+Shopping data is stored at `users/{uid}/shoppingLists/{weekId}` with `weekStartDate`, `sourceMealPlanUpdatedAt`, `generatedAt`, and `updatedAt`. Items are documents at `items/{itemId}`. Generated documents contain a normalized name, optional numeric quantity/unit, original measurement strings, and unique source recipe IDs/names. Manual documents contain only a name, free-form optional note, purchase state, and timestamps. Rules limit every list and item to its authenticated owner.
+
 ## Routes
 
-Public routes are `/`, `/login`, `/register`, and `/forgot-password`. Authenticated routes include `/dashboard`, `/recipes`, `/recipes/:id`, `/favorites`, `/planner`, and `/profile`, all rendered inside `AppLayout`.
+Public routes are `/`, `/login`, `/register`, and `/forgot-password`. Authenticated routes include `/dashboard`, `/recipes`, `/recipes/:id`, `/favorites`, `/planner`, `/shopping-list`, and `/profile`, all rendered inside `AppLayout`.
 
 ## Styling and dependencies
 
@@ -36,4 +48,4 @@ Feature styles use CSS Modules and consume the global CSS custom properties in `
 
 ## Development and validation
 
-Start the app with `npm run dev`. Run `npm run lint`, `npm test`, and `npm run build` to validate changes. Planner date utilities and Firestore service operations have focused tests using local dates and mocked Firebase calls; the app uses the existing Firebase config and requires no additional dependencies.
+Start the app with `npm run dev`. Run `npm run lint`, `npm test`, and `npm run build` to validate changes. Planner date utilities, shopping measurement/aggregation, recipe-detail fetch deduplication, and Firestore list reconciliation have focused tests using local inputs and mocked Firebase calls. The feature uses the existing Firebase config and adds no dependencies.
