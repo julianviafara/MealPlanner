@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, runTransaction, serverTimestamp, type Firestore } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, runTransaction, serverTimestamp, type Firestore } from 'firebase/firestore'
 import { getFirebaseFirestore } from '../../../services/firebase/config'
 import type { PlannedMeal, PlannedRecipe } from '../types/mealPlan.types'
 import { getWeekDays } from '../utils/dateUtils'
@@ -31,6 +31,32 @@ export async function loadWeekMeals(uid: string, weekId: string): Promise<Planne
   const mealsRef = collection(planReference(db, uid, weekId), 'meals')
   const snapshot = await getDocs(mealsRef)
   return snapshot.docs.map((meal) => meal.data() as PlannedMeal).sort(byDateThenCreated)
+}
+
+export async function getWeekPlanUpdatedAt(uid: string, weekId: string): Promise<unknown | null> {
+  const db = await requireDb()
+  const snapshot = await getDoc(planReference(db, uid, weekId))
+  return snapshot.exists() ? snapshot.data().updatedAt ?? null : null
+}
+
+export async function loadWeekPlanSnapshot(uid: string, weekId: string): Promise<{ meals: PlannedMeal[]; updatedAt: unknown | null }> {
+  const version = (value: unknown): string | null => {
+    if (value === null || value === undefined) return null
+    if (value instanceof Date) return `date:${value.getTime()}`
+    if (typeof value === 'number') return `number:${value}`
+    if (typeof value !== 'object') return String(value)
+    if ('seconds' in value && 'nanoseconds' in value) return `timestamp:${String(value.seconds)}:${String(value.nanoseconds)}`
+    const timestamp = value as { toMillis?: () => number }
+    return typeof timestamp.toMillis === 'function' ? `millis:${timestamp.toMillis()}` : null
+  }
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const before = await getWeekPlanUpdatedAt(uid, weekId)
+    const meals = await loadWeekMeals(uid, weekId)
+    const after = await getWeekPlanUpdatedAt(uid, weekId)
+    if (version(before) === version(after)) return { meals, updatedAt: after }
+  }
+  throw new Error('Your weekly plan changed while it was being read. Please try again.')
 }
 
 export async function addPlannedMeal(uid: string, weekId: string, date: string, recipe: PlannedRecipe): Promise<PlannedMeal> {

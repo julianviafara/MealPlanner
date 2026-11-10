@@ -8,7 +8,9 @@
 
 **Phase 3 — Recipe discovery, details and favourites: implemented.** Authenticated users can search and filter TheMealDB recipes, view full recipe details and manage per-user Firestore favourites.
 
-**Phase 4 — Weekly meal planner: implemented.** Authenticated users can add, change, and remove any number of recipe meals across Monday-to-Sunday weeks. Plans are saved per user and week in Firestore. Shopping lists and ingredient aggregation remain out of scope.
+**Phase 4 — Weekly meal planner: implemented.** Authenticated users can add, change, and remove any number of recipe meals across Monday-to-Sunday weeks. Plans are saved per user and week in Firestore.
+
+**Phase 5 — Shopping list and ingredient aggregation: implemented.** Each list belongs to a week. Generated recipe ingredients remain distinct from user-managed items; compatible, clearly parsed quantities aggregate without unit conversion. Users can regenerate, edit manual items, remove items, and persist purchase status.
 
 ## Project structure
 
@@ -28,6 +30,7 @@ src/
     profile/          profile read and edit page
     recipes/          TheMealDB catalogue, normalized recipes, details, and Firestore favourites
     planner/          local week/date utilities, planner state, calendar, selector and Firestore service
+    shopping-list/    recipe ingredient aggregation, measurement parsing, weekly list UI and Firestore persistence
   layouts/
     AppLayout/        responsive private app shell
     PublicLayout/     public route outlet
@@ -60,7 +63,7 @@ Firebase app initialization is centralized and guarded against duplicate app ini
 ## Routes and auth flow
 
 - Public: `/`, `/login`, `/register`, `/forgot-password`.
-- Private: `/dashboard`, `/recipes`, `/recipes/:id`, `/favorites`, `/planner`, `/profile`.
+- Private: `/dashboard`, `/recipes`, `/recipes/:id`, `/favorites`, `/planner`, `/shopping-list`, `/profile`.
 - A Firebase auth-state listener resolves the initial session before route guards redirect. Private-route redirects retain the requested pathname for post-login navigation. Signed-in visitors to login/registration are sent to the dashboard.
 - Email/password registration validates display name, email, password (8+ characters with upper/lower case and a number), and confirmation; it sets the Auth display name and creates `users/{uid}` with server timestamps.
 - Email/password login, Google popup login, logout, and password reset use Firebase Authentication. First-time Google sign-in creates a user document only when one does not already exist.
@@ -75,11 +78,17 @@ The planner stores one week per user at `users/{uid}/mealPlans/{weekId}`, where 
 
 Date utilities construct dates from local year/month/day values and use local noon for calendar arithmetic. They do not parse a date-only string as a UTC instant. Weeks begin Monday and navigation adds or subtracts seven calendar days. Each day can contain any number of meal documents. Firestore add, change, and remove operations use transactions and update a single meal document plus week metadata.
 
+Weekly shopping lists live at `users/{uid}/shoppingLists/{weekId}` with `weekStartDate`, `sourceMealPlanUpdatedAt`, `generatedAt`, and `updatedAt`. The `weekId` is the same Monday date used by the planner. Items are stored at `users/{uid}/shoppingLists/{weekId}/items/{itemId}`. A generated item stores `type: generated`, display and normalized ingredient names, numeric `quantity` and canonical `unit` when safely parsed, all original measure strings, unique `sourceRecipeIds`/`sourceRecipeNames`, `isPurchased`, and timestamps. A manual item stores `type: manual`, `name`, optional free-form `note`, `isPurchased`, and timestamps. No complete recipe or ingredient instruction data is copied into the list.
+
+When generating, the app fetches details only for unique recipe IDs in the selected week's actual plan. It counts ingredients once for every planned occurrence, even when recipe IDs repeat. If recipe details fail or are missing, regeneration stops before changing the list. A generated item ID is `generated_` plus the URI-encoded normalized ingredient and measurement-group identity. Reconciliation preserves purchase status and creation time for matching IDs, removes obsolete generated items, and leaves all manual items untouched. A removed generated ingredient will return on a later regeneration if still present in the recipes.
+
+Measurement parsing recognizes integers, decimals (for example `1.5`), simple fractions (`1/2`), and mixed numbers (`1 1/2`). Supported canonical units are `g`, `kg`, `ml`, `l`, `cup`, `tbsp`, `tsp`, `clove`, and `piece`; aliases include singular/plural words, common tablespoon/teaspoon spellings, and `pc`/`pcs`. Same-unit quantities can be summed. No conversions are performed, including between `g` and `kg` or `ml` and `l`. Unknown units or ambiguous values such as `about 2 cups` remain unparsed. Identical normalized unparsed measurements may be grouped, but their numeric quantity stays empty. Missing measures display as “No quantity specified”; no quantity is invented.
+
 ## Recipe API and normalization
 
 `features/recipes/services/recipeApi.ts` owns fetch behavior, request cancellation, empty responses, HTTP/JSON errors, and TheMealDB endpoints. `utils/normalizeRecipe.ts` maps raw API records to app types and walks ingredient/measure slots 1–20, trimming values while preserving order and source measurements. Search is debounced and latest requests are aborted. Category, area, and single-ingredient filters run individually because the free API does not support combined filters. The API does not provide pagination for these workflows. Recipe imagery is served by TheMealDB; original source/video/licensing metadata is only shown when supplied.
 
-To deploy the updated rules, open Firebase Console → Firestore Database → Rules, replace the editor contents with this repository's `firestore.rules`, and publish them. Favourites will return permission errors until the update is deployed.
+To deploy the updated rules, open Firebase Console → Firestore Database → Rules, replace the editor contents with this repository's `firestore.rules`, and publish them. Favourites, weekly plans, and shopping lists will return permission errors until the update is deployed.
 
 ## Design and interface
 
@@ -89,11 +98,11 @@ The Phase 1 palette and typography remain in `src/styles/variables.css`; the exi
 
 Run `npm run dev` to start the app. Run `npm run build`, `npm run lint`, and `npm test` to validate changes.
 
-The test suite covers recipe normalization/API response handling and planner date utilities/Firestore operations with mocked data. In this environment `npm run build`, `npm test`, and `npm run lint` could not start: the managed Node/npm commands exited immediately with `shim integrity check failed`; the alternate Node runner blocks `node:process`, which Vite/Vitest require. Therefore those checks must still be run in a normal project shell. The updated rules also need to be published and planner writes verified against Firebase or an Emulator. No Firebase Emulator configuration is present.
+Tests cover recipe normalization/API response handling, planner dates/Firestore operations, shopping measurement parsing, aggregation, recipe-detail deduplication, and list reconciliation using mocked Firebase/API calls. In this environment `npm run build`, `npm test`, and `npm run lint` could not start: the managed Node/npm commands exited immediately with `shim integrity check failed`; the alternate Node runner blocks `node:process`, which Vite/Vitest require. Therefore those checks still need to run in a normal project shell. The updated rules need to be published and shopping-list writes verified against Firebase or an Emulator. No Firebase Emulator configuration is present.
 
 Dependencies added in Phase 2: `firebase`, `react-router-dom`, `lucide-react`, `vitest`, `jsdom`, `@testing-library/react`, and `@testing-library/jest-dom`.
 
-Phase 4 adds no dependencies.
+Phases 4 and 5 add no dependencies.
 
 ## Known limitations and next phase
 
@@ -101,7 +110,7 @@ Phase 4 adds no dependencies.
 - Firebase sign-in providers, authorized domains, Firestore database, and deployed rules still need verification in Firebase Console.
 - Profile email changes use Firebase’s immediate `updateEmail` API after reauthentication; Firebase may reject the operation for account or project policy reasons, and those errors are surfaced.
 - The free TheMealDB key is development/education access, and the API does not offer combined filters or pagination here.
-- Firestore rules must be published in Firebase Console before favourites or weekly plans can be used against the hosted database.
-- Shopping lists and ingredient aggregation remain future work (Phase 5).
+- Firestore rules must be published in Firebase Console before favourites, weekly plans, or shopping lists can be used against the hosted database.
+- Ingredient units are never converted. Unknown and ambiguous measurements stay as original text and are kept out of numeric totals.
 
-Do not begin shopping-list or ingredient aggregation work until Phase 5 is explicitly authorized.
+Shopping data remains private to each account. Grocery ordering, pricing, serving adjustments, nutrition, and shared lists are outside this phase.

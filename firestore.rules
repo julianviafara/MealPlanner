@@ -108,6 +108,94 @@ service cloud.firestore {
           allow delete: if isOwner();
         }
       }
+
+      match /shoppingLists/{weekId} {
+        function hasValidShoppingList() {
+          return request.resource.data.keys().hasAll([
+            'weekStartDate', 'sourceMealPlanUpdatedAt', 'generatedAt', 'updatedAt'
+          ])
+          && request.resource.data.keys().hasOnly([
+            'weekStartDate', 'sourceMealPlanUpdatedAt', 'generatedAt', 'updatedAt'
+          ])
+          && request.resource.data.weekStartDate == weekId
+          && weekId.matches('^\\d{4}-\\d{2}-\\d{2}$')
+          && (request.resource.data.sourceMealPlanUpdatedAt == null || request.resource.data.sourceMealPlanUpdatedAt is timestamp)
+          && (request.resource.data.generatedAt == null || request.resource.data.generatedAt is timestamp)
+          && request.resource.data.updatedAt is timestamp
+          && request.resource.data.updatedAt == request.time;
+        }
+
+        allow read: if isOwner();
+        allow create: if isOwner()
+          && hasValidShoppingList()
+          && (request.resource.data.generatedAt == null || request.resource.data.generatedAt == request.time);
+        allow update: if isOwner()
+          && hasValidShoppingList()
+          && request.resource.data.weekStartDate == resource.data.weekStartDate
+          && (request.resource.data.generatedAt == resource.data.generatedAt || request.resource.data.generatedAt == request.time);
+        allow delete: if isOwner();
+
+        match /items/{itemId} {
+          function hasValidGeneratedItem() {
+            return request.resource.data.keys().hasAll([
+              'itemId', 'type', 'name', 'normalizedName', 'quantity', 'unit', 'originalMeasures',
+              'sourceRecipeIds', 'sourceRecipeNames', 'isPurchased', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.keys().hasOnly([
+              'itemId', 'type', 'name', 'normalizedName', 'quantity', 'unit', 'originalMeasures',
+              'sourceRecipeIds', 'sourceRecipeNames', 'isPurchased', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.type == 'generated'
+            && request.resource.data.itemId == itemId
+            && request.resource.data.name is string
+            && request.resource.data.name.size() > 0
+            && request.resource.data.normalizedName is string
+            && request.resource.data.normalizedName.size() > 0
+            && (request.resource.data.quantity == null || request.resource.data.quantity is number)
+            && (request.resource.data.unit == null || request.resource.data.unit is string)
+            && request.resource.data.originalMeasures is list
+            && request.resource.data.sourceRecipeIds is list
+            && request.resource.data.sourceRecipeNames is list
+            && request.resource.data.isPurchased is bool
+            && request.resource.data.createdAt is timestamp
+            && request.resource.data.updatedAt is timestamp
+            && request.resource.data.updatedAt == request.time;
+          }
+
+          function hasValidManualItem() {
+            return request.resource.data.keys().hasAll([
+              'itemId', 'type', 'name', 'note', 'isPurchased', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.keys().hasOnly([
+              'itemId', 'type', 'name', 'note', 'isPurchased', 'createdAt', 'updatedAt'
+            ])
+            && request.resource.data.type == 'manual'
+            && request.resource.data.itemId == itemId
+            && request.resource.data.name is string
+            && request.resource.data.name.size() > 0
+            && request.resource.data.note is string
+            && request.resource.data.isPurchased is bool
+            && request.resource.data.createdAt is timestamp
+            && request.resource.data.updatedAt is timestamp
+            && request.resource.data.updatedAt == request.time;
+          }
+
+          function hasValidItem() {
+            return request.resource.data.type == 'generated'
+              ? hasValidGeneratedItem()
+              : request.resource.data.type == 'manual' && hasValidManualItem();
+          }
+
+          allow read: if isOwner();
+          allow create: if isOwner() && hasValidItem() && request.resource.data.createdAt == request.time;
+          allow update: if isOwner()
+            && hasValidItem()
+            && request.resource.data.itemId == resource.data.itemId
+            && request.resource.data.type == resource.data.type
+            && request.resource.data.createdAt == resource.data.createdAt;
+          allow delete: if isOwner();
+        }
+      }
     }
   }
 }

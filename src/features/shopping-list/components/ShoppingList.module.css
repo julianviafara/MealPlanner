@@ -1,0 +1,90 @@
+.page { display: grid; gap: 20px; color: var(--color-ink); }
+.pageHeading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.pageHeading h1 { margin: 7px 0 8px; font: 600 clamp(2rem, 4vw, 3rem)/1.08 var(--font-display); letter-spacing: -.03em; }
+.pageHeading p { margin: 0; color: var(--color-muted); line-height: 1.6; }
+.pageHeading :global(button) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+.eyebrow { color: var(--color-accent); font-size: 10px; font-weight: 700; letter-spacing: 1.45px; text-transform: uppercase; }
+.weekNavigation { margin-bottom: 1px; }
+.spinning { animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.staleNotice { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 14px 16px; border: 1px solid color-mix(in srgb, var(--color-accent) 42%, var(--color-border)); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)); }
+.staleNotice > div { display: flex; align-items: center; gap: 10px; color: var(--color-accent); }
+.staleNotice p { margin: 0; color: var(--color-ink); font-size: 12px; line-height: 1.5; }
+.staleNotice > :global(button) { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.progressCard { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 17px 20px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.progressCard > div { display: flex; align-items: center; gap: 12px; }
+.progressIcon { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 12px; color: var(--color-primary); background: var(--color-secondary); }
+.progressCard strong, .progressCard > div > div > span { display: block; }
+.progressCard strong { font-size: 13px; }
+.progressCard > div > div > span { margin-top: 4px; color: var(--color-muted); font-size: 10px; }
+.progressCard progress { width: min(260px, 36%); height: 9px; overflow: hidden; border: 0; border-radius: 99px; appearance: none; background: var(--color-surface-alt); }
+.progressCard progress::-webkit-progress-bar { border-radius: 99px; background: var(--color-surface-alt); }
+.progressCard progress::-webkit-progress-value { border-radius: 99px; background: var(--color-primary); transition: width .2s ease; }
+.progressCard progress::-moz-progress-bar { border-radius: 99px; background: var(--color-primary); }
+.noMeals { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 20px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.noMeals h2 { margin: 4px 0; font: 600 1.25rem var(--font-display); }
+.noMeals p { margin: 0; color: var(--color-muted); font-size: 12px; line-height: 1.55; }
+.noMeals a { display: inline-flex; align-items: center; gap: 7px; color: var(--color-primary); font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.noMeals a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.listSection { display: grid; gap: 12px; padding: 19px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.sectionHeader { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.sectionHeader h2 { display: flex; align-items: center; gap: 9px; margin: 4px 0 0; font: 600 1.45rem/1.2 var(--font-display); }
+.sectionHeader h2 > span { display: inline-grid; min-width: 23px; height: 23px; padding: 0 5px; place-items: center; border-radius: 99px; color: var(--color-primary); background: var(--color-secondary); font: 700 10px var(--font-body); }
+.sectionKicker { color: var(--color-muted); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; }
+.sectionHeader > :global(button) { display: inline-flex; align-items: center; gap: 7px; }
+.itemsList { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-border); }
+.itemRow { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 69px; padding: 10px 2px; border-bottom: 1px solid var(--color-border); }
+.purchaseButton { display: grid; width: 30px; height: 30px; place-items: center; border: 1.5px solid var(--color-border); border-radius: 9px; color: var(--color-white); background: var(--color-surface); cursor: pointer; transition: background .15s, border-color .15s; }
+.purchaseButton:hover { border-color: var(--color-primary); }
+.purchased .purchaseButton { border-color: var(--color-primary); background: var(--color-primary); }
+.purchaseButton:disabled { opacity: .6; cursor: wait; }
+.itemCopy { display: grid; min-width: 0; gap: 3px; }
+.itemCopy strong { overflow-wrap: anywhere; font-size: 13px; line-height: 1.4; }
+.measure { color: var(--color-primary); font-size: 12px; font-weight: 600; }
+.provenance { color: var(--color-muted); font-size: 10px; line-height: 1.45; }
+.purchased .itemCopy strong { color: var(--color-muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+.purchased .measure, .purchased .provenance { opacity: .72; }
+.itemActions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.itemActions > button { display: grid; width: 36px; height: 36px; place-items: center; border: 0; border-radius: 9px; color: var(--color-muted); background: transparent; cursor: pointer; }
+.itemActions > button:hover { color: var(--color-primary); background: var(--color-secondary); }
+.itemActions > button:last-child:hover { color: #a33e37; }
+.itemActions > button:disabled { opacity: .55; cursor: wait; }
+.removeConfirm { display: flex; align-items: center; gap: 3px; color: var(--color-muted); font-size: 10px; white-space: nowrap; }
+.removeConfirm button { min-height: 32px; padding: 0 8px; border: 0; border-radius: 7px; color: var(--color-muted); background: transparent; font: 600 10px var(--font-body); cursor: pointer; }
+.removeConfirm button:nth-of-type(1) { color: #a33e37; }
+.removeConfirm button:hover { background: var(--color-secondary); }
+.removeConfirm button:disabled { opacity: .55; }
+.sectionEmpty { padding: 19px 3px 6px; color: var(--color-muted); font-size: 12px; line-height: 1.6; }
+.manualForm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; gap: 12px; padding: 15px; border-radius: 11px; background: var(--color-page); }
+.formActions { display: flex; align-items: center; gap: 4px; }
+.formActions :global(button) { white-space: nowrap; }
+.editRow { padding: 10px 0; list-style: none; border-bottom: 1px solid var(--color-border); }
+.editRow .manualForm { padding: 12px; }
+.allEmpty { margin: 0; color: var(--color-muted); font-size: 11px; text-align: center; }
+.attribution { margin: 0; color: var(--color-muted); font-size: 10px; }
+.loading { display: grid; min-height: 220px; place-items: center; }
+.error { margin: 0; padding: 12px 14px; border-radius: 9px; color: #a33e37; background: color-mix(in srgb, #a33e37 10%, var(--color-surface)); font-size: 12px; line-height: 1.5; }
+.success { display: flex; align-items: center; gap: 8px; margin: 0; padding: 11px 13px; border-radius: 9px; color: var(--color-primary); background: var(--color-secondary); font-size: 12px; }
+.loadError { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 14px; border: 1px solid color-mix(in srgb, #a33e37 28%, var(--color-border)); border-radius: var(--radius-md); color: #a33e37; background: var(--color-surface); }
+.loadError p { margin: 0; font-size: 13px; }
+@media (max-width: 760px) {
+  .pageHeading { align-items: flex-start; flex-direction: column; }
+  .pageHeading :global(button) { min-height: 42px; }
+  .staleNotice, .noMeals { align-items: flex-start; flex-direction: column; }
+  .staleNotice > :global(button) { width: 100%; justify-content: center; }
+  .progressCard { align-items: stretch; flex-direction: column; gap: 15px; }
+  .progressCard progress { width: 100%; }
+  .listSection { padding: 15px; }
+  .manualForm { grid-template-columns: 1fr; }
+  .formActions { justify-content: flex-end; }
+}
+@media (max-width: 430px) {
+  .sectionHeader { align-items: flex-start; flex-direction: column; }
+  .sectionHeader > :global(button) { min-height: 38px; }
+  .itemRow { grid-template-columns: 32px minmax(0, 1fr) auto; gap: 8px; }
+  .itemActions > button { width: 32px; }
+  .removeConfirm { grid-column: 1 / -1; }
+  .removeConfirm span { display: none; }
+  .itemCopy strong { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .spinning { animation: none; } .progressCard progress::-webkit-progress-value { transition: none; } }
