@@ -92,7 +92,7 @@ The shopping list fetches details for recipes actually scheduled in the selected
 
 ## Requirements and local setup
 
-- Node.js `22.12.x`, `24.x`, or `26+` (matches the installed Vite 8 and Vitest 5 engine ranges).
+- Node.js `24.15.x` or `26+` (satisfies the engine ranges of the locked Firebase, jsdom, and Undici dependencies).
 - npm and Git.
 - A Firebase project for authentication and Firestore-backed features. Public landing and recipe browsing do not require Firebase configuration, but user features do.
 

@@ -105,7 +105,7 @@ The Phase 1 palette and typography remain in `src/styles/variables.css`; the exi
 
 ## Validation
 
-Use Node.js 22.12.x, 24.x, or 26+. Run `npm ci`, then `npm run dev` to start the app. Validate with `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`.
+Use Node.js 24.15.x or 26+. Run `npm ci`, then `npm run dev` to start the app. Validate with `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`.
 
 Tests cover auth validation and route/form interactions, recipe normalization/API response and page interactions, planner dates/Firestore/hook behavior, theme persistence, shopping measurement parsing, aggregation, manual-item form behavior, recipe-detail fetch deduplication, and list reconciliation using mocked Firebase/API calls. GitHub Actions runs lint, TypeScript, separate unit/integration Vitest suites, and build checks. Local validation attempted in this managed environment failed before startup with `shim integrity check failed`; rerun every command in a standard Node/npm shell before treating the phase as verified. No Firebase Emulator or Playwright configuration is present. Firestore rules still need publication and hosted write verification in a dedicated test project.
 

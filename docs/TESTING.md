@@ -2,7 +2,7 @@
 
 ## Automated checks
 
-Use Node.js 22.12.x, 24.x, or 26+ and install the exact lockfile dependencies with `npm ci`. Then run:
+Use Node.js 24.15.x or 26+ and install the exact lockfile dependencies with `npm ci`. Then run:
 
 ```sh
 npm run lint

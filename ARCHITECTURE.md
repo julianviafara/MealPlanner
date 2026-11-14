@@ -49,7 +49,7 @@ Feature styles use CSS Modules and consume the global CSS custom properties in `
 
 ## Development and validation
 
-Use Node.js 22.12.x, 24.x, or 26+. Install with `npm ci`, start the app with `npm run dev`, and validate using `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`. Vitest uses jsdom and mocks Firebase/API boundaries; focused test coverage includes auth flows at the form boundary, recipe pages and normalization, planner state/date/service behavior, theme persistence, and shopping list parsing/aggregation/reconciliation. No Firebase Emulator Suite or Playwright setup is currently included.
+Use Node.js 24.15.x or 26+. Install with `npm ci`, start the app with `npm run dev`, and validate using `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`. Vitest uses jsdom and mocks Firebase/API boundaries; focused test coverage includes auth flows at the form boundary, recipe pages and normalization, planner state/date/service behavior, theme persistence, and shopping list parsing/aggregation/reconciliation. No Firebase Emulator Suite or Playwright setup is currently included.
 
 ## Release preparation (Phase 6)
 

@@ -2,6 +2,8 @@
 
 The repository is prepared for Firebase Hosting, but no deployment has been performed and no project alias is configured. `firebase.json` serves Vite's `dist/` output, rewrites app routes to `index.html`, applies long-lived immutable caching to fingerprinted `/assets/`, avoids caching the app shell, and points Firebase CLI at `firestore.rules`.
 
+Use Node.js 24.15.x or 26+ for local and CI builds. The npm lockfile currently resolves Firebase, jsdom, and Undici releases whose declared engine requirements exceed Node 22.12.
+
 ## Staging
 
 1. Create or select a dedicated staging Firebase project. Enable the required Authentication providers, create Firestore, add the staging hosting domain to authorized domains, and publish the repository's rules.
