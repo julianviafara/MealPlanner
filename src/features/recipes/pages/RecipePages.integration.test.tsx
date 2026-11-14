@@ -62,8 +62,8 @@ describe('recipe page interactions', () => {
     mockSearch.mockResolvedValue([])
     render(<MemoryRouter initialEntries={['/recipes']}><RecipeCatalogPage /></MemoryRouter>)
     fireEvent.change(screen.getByRole('textbox', { name: 'Search recipes by name' }), { target: { value: 'missing dish' } })
+    await waitFor(() => expect(mockSearch).toHaveBeenCalledWith('missing dish', expect.any(AbortSignal)))
     expect(await screen.findByRole('heading', { name: 'No recipes found' })).toBeInTheDocument()
-    expect(mockSearch).toHaveBeenCalledWith('missing dish', expect.any(AbortSignal))
 
     mockSearch.mockResolvedValue([recipeSummary])
     fireEvent.change(screen.getByRole('textbox', { name: 'Search recipes by name' }), { target: { value: 'garden pasta' } })
