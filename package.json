@@ -14,7 +14,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "test:unit": "vitest run --exclude \"**/*.integration.test.tsx\"",
-    "test:integration": "vitest run \"src/**/*.integration.test.tsx\"",
+    "test:integration": "vitest run integration",
     "preview": "vite preview"
   },
   "dependencies": {
