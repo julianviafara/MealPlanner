@@ -12,6 +12,8 @@
 
 **Phase 5 — Shopping list and ingredient aggregation: implemented.** Each list belongs to a week. Generated recipe ingredients remain distinct from user-managed items; compatible, clearly parsed quantities aggregate without unit conversion. Users can regenerate, edit manual items, remove items, and persist purchase status.
 
+**Phase 6 — Release readiness: implementation prepared.** Repository documentation, environment template, CI validation, Firebase Hosting SPA configuration, and additional React Testing Library interactions are included. Production deployment, GitHub branch protection, Firebase Emulator security tests, and Playwright E2E are not claimed as complete; see `docs/TESTING.md` and `docs/DEPLOYMENT.md`.
+
 ## Project structure
 
 ```text
@@ -21,11 +23,11 @@ src/
     providers/        AuthProvider, AuthContext/useAuth, ThemeProvider/useTheme
     router/           AppRouter and route-guard tests
   components/
-    shared/           Logo, ThemeToggle
+    shared/           Logo, ThemeToggle, app-level render-error boundary
     ui/               Button, Input, Card, LoadingSpinner
   features/
     auth/             login, registration, password recovery, auth services and validation
-    dashboard/        introductory dashboard and future-feature placeholders
+    dashboard/        authenticated welcome page and feature links
     landing/           LandingPage and separate page-section components
     profile/          profile read and edit page
     recipes/          TheMealDB catalogue, normalized recipes, details, and Firestore favourites
@@ -44,6 +46,13 @@ src/
     variables.css
   test/setup.ts
   main.tsx
+docs/
+  screenshots/          captured application screens
+  TESTING.md
+  DEPLOYMENT.md
+  SECURITY.md
+.github/workflows/ci.yml
+firebase.json
 firestore.rules
 .env.example
 ```
@@ -53,7 +62,7 @@ firestore.rules
 1. The provided Firebase web app values are now stored in the ignored `.env.local` file. `.env.example` documents the four required variable names for other developers. Analytics is not initialized because Phase 2 does not use it.
 2. In Firebase Console, enable **Email/Password** and **Google** under Authentication → Sign-in method. Add `localhost` and the production host to Authentication → Settings → Authorized domains.
 3. Create/select the Cloud Firestore database.
-4. Open Firestore → Rules, replace the editor with the contents of `firestore.rules`, and click Publish. The rules have not been deployed by this project change; the current file includes owner-only rules for profiles, favourites, and weekly plans.
+4. Open Firestore → Rules, replace the editor with the contents of `firestore.rules`, and click Publish. The rules have not been deployed by this project change; the current file includes owner-only rules for profiles, favourites, weekly plans, and shopping lists.
 5. Restart Vite after editing `.env.local`.
 
 The recipe catalogue uses TheMealDB's public development key (`1`) configured centrally in `src/services/themealdb/config.ts`. It is intended for development and education; replace it with an appropriately licensed production configuration before release. No API credential is required for local development.
@@ -96,21 +105,24 @@ The Phase 1 palette and typography remain in `src/styles/variables.css`; the exi
 
 ## Validation
 
-Run `npm run dev` to start the app. Run `npm run build`, `npm run lint`, and `npm test` to validate changes.
+Use Node.js 22.12.x, 24.x, or 26+. Run `npm ci`, then `npm run dev` to start the app. Validate with `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`.
 
-Tests cover recipe normalization/API response handling, planner dates/Firestore operations, shopping measurement parsing, aggregation, recipe-detail deduplication, and list reconciliation using mocked Firebase/API calls. In this environment `npm run build`, `npm test`, and `npm run lint` could not start: the managed Node/npm commands exited immediately with `shim integrity check failed`; the alternate Node runner blocks `node:process`, which Vite/Vitest require. Therefore those checks still need to run in a normal project shell. The updated rules need to be published and shopping-list writes verified against Firebase or an Emulator. No Firebase Emulator configuration is present.
+Tests cover auth validation and route/form interactions, recipe normalization/API response and page interactions, planner dates/Firestore/hook behavior, theme persistence, shopping measurement parsing, aggregation, manual-item form behavior, recipe-detail fetch deduplication, and list reconciliation using mocked Firebase/API calls. GitHub Actions runs lint, TypeScript, separate unit/integration Vitest suites, and build checks. Local validation attempted in this managed environment failed before startup with `shim integrity check failed`; rerun every command in a standard Node/npm shell before treating the phase as verified. No Firebase Emulator or Playwright configuration is present. Firestore rules still need publication and hosted write verification in a dedicated test project.
 
-Dependencies added in Phase 2: `firebase`, `react-router-dom`, `lucide-react`, `vitest`, `jsdom`, `@testing-library/react`, and `@testing-library/jest-dom`.
+Dependencies already present: `firebase`, `react-router-dom`, `lucide-react`, `vitest`, `jsdom`, `@testing-library/react`, and `@testing-library/jest-dom`.
 
-Phases 4 and 5 add no dependencies.
+Phases 4–6 add no dependencies. Playwright was evaluated but could not be installed because npm fails before startup; no E2E script is advertised.
 
-## Known limitations and next phase
+## Release limitations and manual setup
 
-- The dashboard's shopping-list card remains an illustrative placeholder.
 - Firebase sign-in providers, authorized domains, Firestore database, and deployed rules still need verification in Firebase Console.
 - Profile email changes use Firebase’s immediate `updateEmail` API after reauthentication; Firebase may reject the operation for account or project policy reasons, and those errors are surfaced.
 - The free TheMealDB key is development/education access, and the API does not offer combined filters or pagination here.
-- Firestore rules must be published in Firebase Console before favourites, weekly plans, or shopping lists can be used against the hosted database.
+- Firestore rules must be published in the intended Firebase project before favourites, weekly plans, or shopping lists can be used against the hosted database.
 - Ingredient units are never converted. Unknown and ambiguous measurements stay as original text and are kept out of numeric totals.
+- No production URL or Firebase project alias is configured. Deployment instructions require explicit project IDs and owner authorization.
+- The repository has no license. The owner must choose and add one before reuse rights are granted.
+- GitHub metadata currently has no repository description, topics, or homepage URL; add an accurate description and relevant topics from the repository settings when desired.
+- GitHub branch protection is not changed by this repository update.
 
-Shopping data remains private to each account. Grocery ordering, pricing, serving adjustments, nutrition, and shared lists are outside this phase.
+Shopping data remains private to each account. Grocery ordering, pricing, serving adjustments, nutrition, shared lists, and browser E2E automation are outside the verified implementation.

@@ -3,6 +3,7 @@
 ## Application layers
 
 - `app/` owns providers and route composition. `RequireAuth` protects the authenticated app shell.
+- `components/shared/AppErrorBoundary/` provides a generic recovery screen for unexpected render errors without exposing error details.
 - `layouts/` contains shared public and authenticated navigation.
 - `components/` contains general purpose UI controls.
 - `features/` groups pages, components, types, hooks, and service logic by product capability.
@@ -48,4 +49,12 @@ Feature styles use CSS Modules and consume the global CSS custom properties in `
 
 ## Development and validation
 
-Start the app with `npm run dev`. Run `npm run lint`, `npm test`, and `npm run build` to validate changes. Planner date utilities, shopping measurement/aggregation, recipe-detail fetch deduplication, and Firestore list reconciliation have focused tests using local inputs and mocked Firebase calls. The feature uses the existing Firebase config and adds no dependencies.
+Use Node.js 22.12.x, 24.x, or 26+. Install with `npm ci`, start the app with `npm run dev`, and validate using `npm run lint`, `npm run typecheck`, `npm run test:unit`, `npm run test:integration`, `npm test`, and `npm run build`. Vitest uses jsdom and mocks Firebase/API boundaries; focused test coverage includes auth flows at the form boundary, recipe pages and normalization, planner state/date/service behavior, theme persistence, and shopping list parsing/aggregation/reconciliation. No Firebase Emulator Suite or Playwright setup is currently included.
+
+## Release preparation (Phase 6)
+
+`.env.example` lists the exact client Firebase values read by `services/firebase/config.ts`; local `.env*` files are ignored. `.github/workflows/ci.yml` runs lockfile installation, Oxlint, TypeScript, Vitest, and the Vite production build on pull requests and pushes to `main`/`master`. The workflow uses read-only repository permissions and does not deploy or receive Firebase credentials.
+
+`firebase.json` configures Firebase Hosting to serve `dist/`, route unknown paths to the SPA entry point, cache fingerprinted assets, and use the repository Firestore rules for explicit CLI deployments. There is no `.firebaserc`, production URL, or automated deployment workflow; staging and production commands are documented in `docs/DEPLOYMENT.md`. Deployment is owner-controlled.
+
+The repository has no license. Select and add one before granting reuse rights. Recommended GitHub branch protections are documented in `docs/SECURITY.md`; they have not been configured by this repository change. Playwright and emulator security tests remain unconfigured because the local npm shim fails before package installation can start; test these workflows manually against a dedicated Firebase test project as described in `docs/TESTING.md`.

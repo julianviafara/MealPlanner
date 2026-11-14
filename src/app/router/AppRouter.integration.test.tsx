@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import type { User } from 'firebase/auth'
 import { ThemeProvider } from '../providers/ThemeProvider'
@@ -73,5 +73,27 @@ describe('application route guards', () => {
     expect(await screen.findByText('Enter a valid email address.')).toBeInTheDocument()
     expect(screen.getByText('Enter your password.')).toBeInTheDocument()
     expect(context.login).not.toHaveBeenCalled()
+  })
+
+  it('submits valid registration details through the auth provider', async () => {
+    const context = authValue('unauthenticated', null)
+    mockUseAuth.mockReturnValue(context)
+    renderPath('/register')
+    fireEvent.change(await screen.findByLabelText('Display name'), { target: { value: 'Taylor Cook' } })
+    fireEvent.change(screen.getByLabelText('Email address'), { target: { value: 'taylor@example.test' } })
+    fireEvent.change(screen.getByLabelText('Password', { selector: 'input' }), { target: { value: 'StrongPass1' } })
+    fireEvent.change(screen.getByLabelText('Confirm password'), { target: { value: 'StrongPass1' } })
+    fireEvent.click(screen.getByRole('button', { name: /^Create account$/ }))
+    await waitFor(() => expect(context.register).toHaveBeenCalledWith('Taylor Cook', 'taylor@example.test', 'StrongPass1'))
+  })
+
+  it('submits valid login credentials through the auth provider', async () => {
+    const context = authValue('unauthenticated', null)
+    mockUseAuth.mockReturnValue(context)
+    renderPath('/login')
+    fireEvent.change(await screen.findByLabelText('Email address'), { target: { value: 'taylor@example.test' } })
+    fireEvent.change(screen.getByLabelText('Password', { selector: 'input' }), { target: { value: 'StrongPass1' } })
+    fireEvent.click(screen.getByRole('button', { name: /^Log in$/ }))
+    await waitFor(() => expect(context.login).toHaveBeenCalledWith('taylor@example.test', 'StrongPass1'))
   })
 })

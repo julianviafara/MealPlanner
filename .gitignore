@@ -13,6 +13,10 @@ dist-ssr
 *.local
 .env*
 !.env.example
+.firebase
+coverage
+playwright-report
+test-results
 
 # Editor directories and files
 .vscode/*

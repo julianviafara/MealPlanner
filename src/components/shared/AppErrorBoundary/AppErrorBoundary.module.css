@@ -1,0 +1,8 @@
+.page { display: grid; min-height: 100svh; place-items: center; padding: 24px; color: var(--color-ink); background: var(--color-page); }
+.card { display: grid; justify-items: start; gap: 13px; width: min(100%, 520px); padding: clamp(24px, 5vw, 42px); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-card); }
+.eyebrow { color: var(--color-accent); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+.card h1 { margin: 0; font: 600 clamp(1.8rem, 5vw, 2.6rem)/1.1 var(--font-display); }
+.card p { margin: 0; color: var(--color-muted); line-height: 1.65; }
+.card button { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; margin-top: 7px; padding: 0 16px; border: 0; border-radius: var(--radius-sm); color: var(--color-white); background: var(--color-primary); font: 600 13px var(--font-body); cursor: pointer; }
+.card button:hover { background: var(--color-primary-hover); }
+.card button:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }

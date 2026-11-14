@@ -1,13 +1,20 @@
 {
   "name": "mealplanner",
+  "description": "A responsive meal planner for recipe discovery, weekly planning, and shopping lists.",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
     "lint": "oxlint",
     "test": "vitest run",
+    "test:unit": "vitest run --exclude \"**/*.integration.test.tsx\"",
+    "test:integration": "vitest run \"src/**/*.integration.test.tsx\"",
     "preview": "vite preview"
   },
   "dependencies": {
