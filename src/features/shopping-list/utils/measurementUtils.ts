@@ -58,8 +58,13 @@ export function formatUnit(unit: string | null, quantity: number): string {
 
 export function formatGeneratedMeasure(quantity: number | null, unit: string | null, originals: string[]): string {
   if (quantity !== null) return [formatQuantity(quantity), formatUnit(unit, quantity)].filter(Boolean).join(' ')
-  const unique = [...new Map(originals.map((measure) => [measure.trim().replace(/\s+/g, ' ').toLowerCase(), measure.trim()])).values()]
-  return unique.filter(Boolean).join(' · ') || 'No quantity specified'
+  const unique = new Map<string, string>()
+  for (const measure of originals) {
+    const displayMeasure = measure.trim().replace(/\s+/g, ' ')
+    const normalizedMeasure = displayMeasure.toLowerCase()
+    if (normalizedMeasure && !unique.has(normalizedMeasure)) unique.set(normalizedMeasure, displayMeasure)
+  }
+  return [...unique.values()].join(' · ') || 'No quantity specified'
 }
 
 export function normalizeRawMeasure(measure: string): string {
